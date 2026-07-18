@@ -16,7 +16,7 @@
         "id": 2,
         "title": "Noyau conversion (phase A, lead)",
         "description": "Registre typé des conversions (format source vers cibles possibles), détection de format par magic bytes + extension, infrastructure Web Worker (messaging typé, progression, annulation), lazy-loading des modules de conversion par import() dynamique, téléchargement des résultats (fichier unique ou ZIP client-side pour les lots).",
-        "status": "in-progress",
+        "status": "done",
         "dependencies": [
           1
         ],
@@ -29,7 +29,7 @@
         "id": 3,
         "title": "Conversions PDF (phase B, teammate pdf)",
         "description": "PDF vers PNG/JPG par page avec résolution (pdfjs-dist), images vers PDF avec ordre (pdf-lib), merge PDF et split/extraction de pages (@jspawn/qpdf-wasm). Le tout via les interfaces du noyau, dans des workers.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           2
         ],
@@ -40,27 +40,27 @@
           {
             "id": 1,
             "title": "PDF vers PNG/JPG par page avec résolution (pdfjs-dist)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "Images vers PDF avec ordre des pages (pdf-lib)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "Merge PDF (@jspawn/qpdf-wasm)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "Split/extraction de pages (@jspawn/qpdf-wasm)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "Tests fixtures + cas erreur (PDF chiffré, corrompu)",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
@@ -68,7 +68,7 @@
         "id": 4,
         "title": "Conversions images (phase B, teammate images)",
         "description": "PNG/JPG/WebP via Canvas API natif (avec réglage qualité), AVIF via @jsquash (encode/decode, lazy-load), SVG vers PNG via @resvg/resvg-wasm (avec dimension cible).",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           2
         ],
@@ -79,27 +79,27 @@
           {
             "id": 1,
             "title": "PNG/JPG/WebP via Canvas API avec réglage qualité",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "AVIF encode/decode (@jsquash, lazy-load)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "SVG vers PNG (@resvg/resvg-wasm, dimension cible)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "Vérification licence exacte de chaque sous-package @jsquash installé",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "Tests round-trip fixtures",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
@@ -107,7 +107,7 @@
         "id": 5,
         "title": "Conversions Office (phase B, teammate office)",
         "description": "XLSX vers CSV/JSON/HTML et CSV vers XLSX (ExcelJS), XLSX vers PDF via rendu HTML (fidélité moyenne étiquetée), DOCX vers PDF mode aperçu via docx-preview vers HTML vers PDF (fidélité limitée étiquetée dans l'UI et la doc).",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           2
         ],
@@ -118,27 +118,27 @@
           {
             "id": 1,
             "title": "XLSX vers CSV/JSON/HTML (ExcelJS, multi-feuilles)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "CSV vers XLSX (ExcelJS)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "XLSX vers PDF via rendu HTML, fidélité moyenne étiquetée",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "DOCX vers PDF mode aperçu (docx-preview, étiquette fidélité)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "Tests fixtures multi-feuilles + DOCX texte extractible",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
@@ -146,7 +146,7 @@
         "id": 6,
         "title": "UI complète (phase B, teammate ui)",
         "description": "Drag-and-drop multi-fichiers, détection et affichage des cibles possibles, conversion par lots avec progression par fichier, téléchargement unitaire et ZIP, i18n FR/EN, pages Confidentialité/RGPD (FR/EN) et Licences tierces, bandeau '100% local, vos fichiers ne quittent jamais votre appareil'.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           2
         ],
@@ -157,27 +157,27 @@
           {
             "id": 1,
             "title": "Drag-and-drop multi-fichiers + détection format + cibles possibles",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "File de conversion par lots : progression, erreurs, téléchargement unitaire + ZIP",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "i18n FR/EN + bandeau 100% local",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "Pages Confidentialité/RGPD (FR/EN) et Licences tierces",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "Tests RTL états + bascule locale ; module factice dev isolé (src/dev/, exclu build prod)",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
