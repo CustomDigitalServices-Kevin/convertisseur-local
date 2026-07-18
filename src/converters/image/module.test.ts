@@ -13,6 +13,12 @@ import { JPEG_1X1, PNG_2X2 } from "../../../tests/fixtures/raster-fixtures";
 // covered by the E2E suite (task 7) instead. See canvas.ts's module-level
 // comment and svg.test.ts's comment for the full reasoning.
 //
+// tiff/gif/bmp (added later, T11) follow the exact same reasoning: their
+// decode/encode functions are pure JS/WASM (covered directly in
+// tiff.test.ts, gif.test.ts, bmp.test.ts) but the full module.ts dispatch
+// still needs a real OffscreenCanvas via imageDataToCanvas/canvasToImageData,
+// so that combined path is deferred to the E2E suite here too.
+//
 // assertImageFormat's "not an image format" branch is intentionally not
 // exercised here either: ConversionRequest.sourceFormat/targetFormat are
 // typed as the full FileFormat union, and registry.ts only ever routes

@@ -1,7 +1,10 @@
 import type { FileFormat } from "../../core/types";
 
 /** The subset of FileFormat this converter module actually handles. */
-export type ImageFormat = Extract<FileFormat, "png" | "jpeg" | "webp" | "avif" | "svg">;
+export type ImageFormat = Extract<
+  FileFormat,
+  "png" | "jpeg" | "webp" | "avif" | "svg" | "tiff" | "gif" | "bmp"
+>;
 
 /** Formats this module can produce. SVG is a source-only format (rasterized to PNG). */
 export type ImageOutputFormat = Exclude<ImageFormat, "svg">;
@@ -16,6 +19,12 @@ export function mimeTypeFor(format: ImageOutputFormat): string {
       return "image/webp";
     case "avif":
       return "image/avif";
+    case "tiff":
+      return "image/tiff";
+    case "gif":
+      return "image/gif";
+    case "bmp":
+      return "image/bmp";
   }
 }
 
