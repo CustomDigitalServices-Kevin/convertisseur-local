@@ -1,0 +1,6 @@
+app: convertisseur
+version: 2
+features:
+  - markdown
+  - data
+enabled: true

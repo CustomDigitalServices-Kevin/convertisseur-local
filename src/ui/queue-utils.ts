@@ -1,4 +1,4 @@
-import { detectFormat } from "../core/detect";
+import { detectFormat, isGooglePointer } from "../core/detect";
 import { targetsFor } from "../core/registry";
 import { WorkerBridge } from "../core/worker-bridge";
 import { FILE_FORMATS } from "../core/types";
@@ -48,6 +48,24 @@ export function intersect(lists: FileFormat[][]): FileFormat[] {
 /** Reads a dropped File, detects its format and resolves its possible targets. */
 export async function buildQueueItem(file: File): Promise<QueueItem> {
   const buffer = await file.arrayBuffer();
+  // Google Drive shortcuts contain no document at all: surface the dedicated
+  // explanation instead of a generic "unrecognized format".
+  if (isGooglePointer(file.name)) {
+    return {
+      id: nextId("file"),
+      file,
+      sourceBuffer: null,
+      sourceFormat: null,
+      targetFormat: null,
+      availableTargets: [],
+      status: "error",
+      progress: 0,
+      errorCode: "gdoc-pointer",
+      localError: null,
+      resultFiles: null,
+      fidelity: null,
+    };
+  }
   const sourceFormat = detectFormat(file.name, buffer);
   if (sourceFormat === null) {
     return {

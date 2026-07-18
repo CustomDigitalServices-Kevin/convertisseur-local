@@ -61,6 +61,9 @@ async function runJob(request: ConversionRequest): Promise<void> {
     const code: ConversionErrorCode =
       error instanceof ConversionError ? error.code : "internal-error";
     const detail = error instanceof Error ? error.message : String(error);
+    // Technical detail for the browser console only; the UI shows a
+    // localized message keyed on `code`.
+    console.error(`[convert.worker] ${request.sourceFormat}->${request.targetFormat} failed (${code}): ${detail}`);
     scope.postMessage({ kind: "failure", failure: { jobId: request.jobId, code, detail } });
   }
 }

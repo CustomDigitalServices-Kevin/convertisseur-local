@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import type { Plugin } from "vite";
 import react from "@vitejs/plugin-react";
@@ -40,6 +41,18 @@ function injectCsp(): Plugin {
 // relative so the same build also works on GitHub Pages or a local preview.
 export default defineConfig({
   base: "./",
+  resolve: {
+    alias: {
+      // Its "browser" build calls document.createElement at module scope,
+      // which crashes the whole markdown chunk inside the conversion Worker
+      // (no DOM there). The package's own "worker" condition points to this
+      // DOM-free table implementation; Vite bundles with the "browser"
+      // condition, so pin it explicitly.
+      "decode-named-character-reference": fileURLToPath(
+        new URL("./node_modules/decode-named-character-reference/index.js", import.meta.url),
+      ),
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),
