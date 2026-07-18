@@ -2,20 +2,49 @@ import type { ReactElement } from "react";
 import { useLocale } from "../i18n/locale-context";
 
 // Runtime dependencies only (build tooling — Vite, TypeScript, ESLint,
-// Vitest, Playwright — is not bundled and is out of scope here). Kept in
-// sync with package.json "dependencies" plus the WASM codecs pulled in by
-// the converter modules (T3-T5); see scripts/check-licenses.mjs for the
-// automated allowlist gate that enforces this at CI time.
-const RUNTIME_LICENSES: ReadonlyArray<{ name: string; license: string }> = [
-  { name: "react / react-dom", license: "MIT" },
-  { name: "fflate", license: "MIT" },
-  { name: "pdfjs-dist", license: "Apache-2.0" },
-  { name: "pdf-lib", license: "MIT" },
-  { name: "@jspawn/qpdf-wasm", license: "Apache-2.0" },
-  { name: "@jsquash", license: "Apache-2.0" },
-  { name: "@resvg/resvg-wasm", license: "MPL-2.0" },
-  { name: "exceljs", license: "MIT" },
-  { name: "mammoth", license: "BSD-2-Clause" },
+// Vitest, Playwright — is not bundled and is out of scope here).
+// licenses-page.test.ts locks this table against package.json
+// "dependencies": adding a runtime dependency without listing it here
+// fails CI. `covers` maps a display row to the package names it credits.
+export interface RuntimeLicenseEntry {
+  name: string;
+  license: string;
+  covers: string[];
+}
+
+export const RUNTIME_LICENSES: readonly RuntimeLicenseEntry[] = [
+  { name: "react / react-dom", license: "MIT", covers: ["react", "react-dom"] },
+  { name: "fflate", license: "MIT", covers: ["fflate"] },
+  { name: "pdfjs-dist", license: "Apache-2.0", covers: ["pdfjs-dist"] },
+  { name: "pdf-lib", license: "MIT", covers: ["pdf-lib"] },
+  { name: "@jspawn/qpdf-wasm", license: "Apache-2.0", covers: ["@jspawn/qpdf-wasm"] },
+  { name: "@jsquash (AVIF)", license: "Apache-2.0", covers: ["@jsquash/avif"] },
+  { name: "@resvg/resvg-wasm", license: "MPL-2.0", covers: ["@resvg/resvg-wasm"] },
+  { name: "exceljs", license: "MIT", covers: ["exceljs"] },
+  { name: "mammoth", license: "BSD-2-Clause", covers: ["mammoth"] },
+  { name: "marked", license: "MIT", covers: ["marked"] },
+  {
+    name: "unified (remark / rehype / mdast / hast)",
+    license: "MIT",
+    covers: [
+      "unified",
+      "remark-parse",
+      "remark-stringify",
+      "remark-gfm",
+      "rehype-parse",
+      "rehype-remark",
+      "rehype-stringify",
+      "mdast-util-to-string",
+      "hast-util-to-text",
+    ],
+  },
+  { name: "docx", license: "MIT", covers: ["docx"] },
+  { name: "yaml", license: "ISC", covers: ["yaml"] },
+  { name: "fast-xml-parser", license: "MIT", covers: ["fast-xml-parser"] },
+  { name: "utif", license: "MIT", covers: ["utif"] },
+  { name: "omggif", license: "MIT", covers: ["omggif"] },
+  { name: "gifenc", license: "MIT", covers: ["gifenc"] },
+  { name: "bmp-js", license: "MIT", covers: ["bmp-js"] },
 ];
 
 interface LicensesPageProps {

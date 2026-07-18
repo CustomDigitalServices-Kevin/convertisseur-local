@@ -1,6 +1,6 @@
 # CDS site integration (page /outils/)
 
-Turnkey content for `web-apps/cds-site/CDS/src/data/content/` (pattern: base fr/en JSON + empty regional overrides unless a divergence exists; `vignette` must belong to `TOOL_VIGNETTES` in `outils.ts` — `"doc"` fits a converter). The build of this repo is deployed under `/outils/convertisseur/` (Vite `base: "./"` makes the bundle path-agnostic).
+Turnkey content for `web-apps/cds-site/CDS/src/data/content/` (pattern: base fr/en JSON + empty regional overrides unless a divergence exists; `vignette` must belong to `TOOL_VIGNETTES` in `outils.ts` — the converter uses its own dedicated `"convert"` type, added 2026-07-18; rule: every tool gets its own vignette). The build of this repo is deployed under `/outils/convertisseur/` (Vite `base: "./"` makes the bundle path-agnostic).
 
 ## outils.fr.json — object to append to `tools`
 
@@ -11,7 +11,7 @@ Turnkey content for `web-apps/cds-site/CDS/src/data/content/` (pattern: base fr/
   "description": "Convertissez PDF, images, Word et Excel directement dans votre navigateur : PDF vers images, fusion et découpe de PDF, images entre formats (WebP, AVIF...), Excel vers CSV/JSON, Word vers PDF. 100% local : vos fichiers ne quittent jamais votre appareil, aucun envoi vers un serveur.",
   "toolHref": "/outils/convertisseur/",
   "cta": "Ouvrir le convertisseur",
-  "vignette": "doc",
+  "vignette": "convert",
   "highlight": false,
   "docsPath": "https://github.com/CustomDigitalServices-Kevin/convertisseur-local",
   "docsCta": "Code source (MIT)"
@@ -27,7 +27,7 @@ Turnkey content for `web-apps/cds-site/CDS/src/data/content/` (pattern: base fr/
   "description": "Convert PDF, images, Word and Excel right in your browser: PDF to images, PDF merge and split, images across formats (WebP, AVIF...), Excel to CSV/JSON, Word to PDF. 100% local: your files never leave your device, nothing is ever uploaded.",
   "toolHref": "/outils/convertisseur/",
   "cta": "Open the converter",
-  "vignette": "doc",
+  "vignette": "convert",
   "highlight": false,
   "docsPath": "https://github.com/CustomDigitalServices-Kevin/convertisseur-local",
   "docsCta": "Source code (MIT)"

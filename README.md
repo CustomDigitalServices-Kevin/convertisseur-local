@@ -8,17 +8,23 @@ Un convertisseur de fichiers universel qui fonctionne **100% dans votre navigate
 
 Cloud converters (iLovePDF, Smallpdf, CloudConvert...) upload your documents to third-party servers, even if they delete them after a few hours. For sensitive documents (legal, accounting, health, HR), the file has still left your device, transited networks and been stored by a third party. This tool performs every conversion locally with WebAssembly and browser APIs: nothing is ever sent anywhere.
 
-## Conversions (v1)
+## Conversions (v2)
 
 | From | To |
 |---|---|
-| PDF | PNG / JPG (per page), merge, split |
-| PNG / JPG / WebP / AVIF / SVG | PNG / JPG / WebP / AVIF, PDF |
-| XLSX | CSV / JSON / HTML / PDF (labeled medium fidelity) |
-| CSV | XLSX |
-| DOCX | PDF (labeled preview fidelity) |
+| PDF | PNG / JPG (per page), merge, split, MD / DOCX / TXT (labeled preview fidelity) |
+| PNG / JPG / WebP / AVIF / TIFF / GIF / BMP / SVG | PNG / JPG / WebP / AVIF / TIFF / GIF / BMP, PDF |
+| Markdown | HTML / PDF / DOCX / TXT / EPUB |
+| HTML | MD / TXT / EPUB |
+| DOCX | PDF (preview), MD (preview) |
+| XLSX | CSV / JSON / HTML / PDF (medium fidelity) |
+| CSV | XLSX / JSON |
+| YAML / XML / JSON | JSON / YAML / XML / CSV (flat) |
+| TXT | PDF / MD |
 
-Deliberately out of scope: PDF to DOCX (no viable open source WASM library exists), real PDF compression (Ghostscript/MuPDF are AGPL), HEIC (HEVC patents), video and audio.
+Text-based PDF/DOCX outputs are honestly labeled "preview" fidelity: they preserve text and structure, not layout. Google Drive shortcut files (.gdoc) contain no document — the app explains how to export a real DOCX instead.
+
+Deliberately out of scope: faithful-layout PDF to DOCX (no viable open source WASM library exists), real PDF compression (Ghostscript/MuPDF are AGPL), HEIC (HEVC patents), pandoc (GPL), video and audio.
 
 ## Tech
 
