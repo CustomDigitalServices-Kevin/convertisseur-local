@@ -1,0 +1,47 @@
+# PRD v2 : Convertisseur local — design premium + extension formats + vignette site
+
+## Contexte
+
+v1 en prod (custom-digital-services.com/outils/convertisseur/, repo public MIT). Retour Kevin 2026-07-18 : rendu "outil bricolage" à remplacer par un design SaaS premium (maquette poussée dans claude.ai/design projet "Convertisseur Local — Premium", fichier previews/convertisseur-premium.html, copie locale scratchpad design/), formats manquants (MD importé non convertible, PDF→MD/DOCX absents), vignette de la page /outils/ réutilisée à tort (règle : une vignette neuve par outil).
+
+## Objectif global
+
+v2 : UI premium fidèle à la maquette, matrice de conversions étendue au maximum réaliste sous contrainte licences, vignette dédiée sur le site CDS, redéployée en prod.
+
+## Périmètre fonctionnel
+
+1. REFONTE UI PREMIUM (spec = maquette) : header sticky glass, hero halo orange + pill "100% local", dropzone à bordure dégradée avec pills de formats, cartes fichiers avec icônes colorées par famille + anneau de progression SVG, boutons dégradé orange, section confiance (RGPD/offline/MIT), pages Confidentialité et Licences restylées, responsive, dark unique, i18n FR/EN conservée. Interdiction de régresser l'accessibilité (labels, aria, focus) et la CSP (l'anneau de progression SVG se pilote par attributs, pas par style inline).
+2. FORMATS NOUVEAUX (haute confiance, licences vérifiées par la recherche 2026-07-18) :
+   - MD → HTML (marked MIT), MD → DOCX (docx MIT), MD → PDF (pipeline maison : marked → texte structuré → moteur pdf-render.ts existant, fidélité "medium")
+   - HTML → MD (rehype-parse + rehype-remark + remark-stringify, MIT, DOM-free)
+   - DOCX → MD (mammoth BSD-2 → HTML → pipeline rehype), fidélité "preview"
+   - PDF → MD et PDF → DOCX (pdfjs getTextContent + heuristique titres/paragraphes maison ; sortie docx via lib docx), fidélité "preview" étiquetée
+   - TXT (source et cible triviales : TXT→PDF via pdf-render, MD/HTML→TXT)
+   - TIFF ↔ PNG/JPG/WebP (utif MIT + Canvas)
+   - GIF : décodage (omggif MIT) vers PNG/WebP (1re frame), encodage image fixe → GIF (gifenc MIT)
+   - BMP ↔ PNG/JPG (bmp-js MIT)
+   - YAML ↔ JSON (yaml ISC), XML ↔ JSON (fast-xml-parser MIT), JSON ↔ CSV (maison, plat)
+   - MD/HTML → EPUB (epub-gen-memory MIT) si vérification worker OK, sinon reporté
+3. EXCLUSIONS v2 documentées : ODT/ODS et PPTX lecture (odf-kit / officeParser : vérification code source non faite, reportés v3), RTF (libs à comparer, reporté v3), ICO, PPTX écriture (GPL only), .gdoc (pointeur cloud : message UX explicite "exportez en DOCX depuis Google Docs"), HEIC/vidéo/audio (inchangé), pandoc (GPL).
+4. VIGNETTE SITE CDS : nouveau type "convert" dans TOOL_VIGNETTES + rendu mini-fenêtre CSS pur dans OutilsContent.astro (flèches de conversion entre deux pastilles de fichiers, style cohérent avec les vignettes existantes), test outils.test.ts étendu, carte convertisseur basculée vignette "convert". Règle permanente : jamais réutiliser une vignette existante.
+
+## Contraintes techniques
+
+- Inchangées v1 : MIT produit, allowlist licences CI (MIT/Apache/BSD/MPL + ISC déjà autorisé), Web Workers, lazy-loading par module, PWA, CSP stricte, TS strict, tests Vitest + E2E Playwright réels, zéro any/TODO/stub.
+- Nouvelles familles = nouveaux modules converters (markdown/, data/, image existant étendu) pour préserver le code-splitting.
+- pdf-render.ts (moteur pagination texte→PDF du module office) est promu utilitaire partagé si markdown en a besoin (coordination lead).
+- Registry/detect/types : étendus PAR LE LEAD AVANT le spawn (évite les conflits croisés de la phase B v1).
+
+## Critères d'acceptation
+
+- L'UI correspond à la maquette : captures Playwright en T12 et GO explicite Kevin AVANT tout déploiement prod (D12)
+- Chaque nouvelle conversion testée sur fixture réelle (Vitest) + 1 E2E par nouvelle famille (markdown, data)
+- Drop d'un .md propose des cibles ; drop d'un .gdoc affiche le message explicite
+- check:licenses vert, grep anti-stub vert, 0 régression sur les conversions v1 (suite complète verte)
+- Vignette "convert" visible sur /outils/ (4 locales), tests site verts, deploy prod SUCCESS + smoke live
+
+## Hypothèses retenues
+
+- "Format Google" = DOCX importable dans Google Docs (le .gdoc est un pointeur JSON vers Drive, aucune conversion locale possible : sourcé)
+- Le design est appliqué directement (Kevin a demandé le rendu, pas seulement la proposition) ; itérations visuelles possibles après mise en ligne
+- EPUB écriture incluse seulement si epub-gen-memory tourne réellement en Worker (vérif du teammate), sinon documentée reportée

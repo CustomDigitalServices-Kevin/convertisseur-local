@@ -6,8 +6,8 @@
 import type { ConversionOutputFile } from "../../core/types";
 import { loadWorkbook, sheetToRows } from "./xlsx-shared";
 import { sheetRowsToHtmlTable, escapeHtml } from "./xlsx-to-tabular";
-import { parseHtmlBlocks } from "./html-blocks";
-import { renderBlocksToPdf } from "./pdf-render";
+import { parseHtmlBlocks } from "../shared/html-blocks";
+import { renderBlocksToPdf } from "../shared/pdf-render";
 import { baseName, MIME_TYPES } from "./naming";
 
 export async function xlsxToPdfFile(

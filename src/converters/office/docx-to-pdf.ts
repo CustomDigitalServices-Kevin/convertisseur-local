@@ -8,8 +8,8 @@
 import mammoth from "mammoth";
 import type { ConversionOutputFile } from "../../core/types";
 import { ConversionError } from "../../core/types";
-import { parseHtmlBlocks } from "./html-blocks";
-import { renderBlocksToPdf } from "./pdf-render";
+import { parseHtmlBlocks } from "../shared/html-blocks";
+import { renderBlocksToPdf } from "../shared/pdf-render";
 import { baseName, MIME_TYPES } from "./naming";
 import { assertNotPasswordProtected } from "./ooxml";
 

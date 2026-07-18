@@ -227,11 +227,208 @@
             "status": "done"
           }
         ]
+      },
+      {
+        "id": 8,
+        "title": "Core v2 (phase A2, lead)",
+        "status": "pending",
+        "dependencies": [
+          7
+        ],
+        "priority": "high",
+        "description": "Étendre types.ts (FILE_FORMATS : md, txt, tiff, gif, bmp, yaml, xml, epub), detect.ts (magic bytes TIFF/GIF/BMP, extensions md/txt/yaml/xml, cas .gdoc = code erreur dédié 'gdoc-pointer'), registry.ts (toutes les paires v2 avec module owner markdown/data/image/office), promouvoir pdf-render.ts du module office en utilitaire partagé src/converters/shared/, messages i18n des nouveaux codes erreur.",
+        "details": "Fait AVANT le spawn pour éviter les conflits croisés v1. Registry = contrat des teammates.",
+        "testStrategy": "Vitest detect (fixtures magic bytes réelles TIFF/GIF/BMP, .gdoc), registry (paires v2, exclusions).",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "FILE_FORMATS + codes erreur (gdoc-pointer)",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "detect.ts magic bytes + extensions + .gdoc",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "registry.ts paires v2 par module",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "pdf-render.ts partagé (refactor office)",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Tests detect/registry v2",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Refonte UI premium (phase B2, teammate ui)",
+        "status": "pending",
+        "dependencies": [
+          8
+        ],
+        "priority": "high",
+        "description": "Appliquer la maquette premium (scratchpad design/convertisseur-premium.html, aussi dans claude.ai/design) : header glass, hero halo orange, pill 100% local, dropzone bordure dégradée + pills formats, cartes fichiers icônes par famille + anneau progression SVG (attributs, pas de style inline), boutons dégradé, section confiance, pages restylées, message .gdoc.",
+        "details": "Tokens : bg #0b0b0d, panel #0f0f11, orange #ff6b00, green #7fd6a8, radius 22px, Inter. Accessibilité et i18n conservées.",
+        "testStrategy": "Tests RTL existants adaptés + nouveaux (message gdoc), zéro régression E2E.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Tokens + header + hero + section confiance",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Dropzone premium + pills formats",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Cartes fichiers + anneau progression SVG",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Pages Confidentialité/Licences restylées + message .gdoc",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Tests RTL adaptés",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Module markdown (phase B2, teammate md)",
+        "status": "pending",
+        "dependencies": [
+          8
+        ],
+        "priority": "high",
+        "description": "src/converters/markdown/ : MD→HTML (marked), HTML→MD (rehype-parse+rehype-remark+remark-stringify), MD→DOCX (docx), MD→PDF (marked→pdf-render partagé, medium), DOCX→MD (mammoth→rehype, preview), PDF→MD et PDF→DOCX (pdfjs getTextContent + heuristique maison, preview), TXT (MD/HTML→TXT, TXT→PDF), MD/HTML→EPUB (epub-gen-memory) SEULEMENT si vérifié en worker sinon documenter le report.",
+        "details": "Deps autorisées : marked, rehype-parse, rehype-remark, remark-stringify, unified, docx, epub-gen-memory. Licences vérifiées par paquet avant commit.",
+        "testStrategy": "Vitest fixtures réelles (md, html, pdf, docx), round-trips, fidélités correctes dans les résultats.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "MD→HTML + HTML→MD (pipeline rehype)",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "MD→DOCX + MD→PDF + TXT",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "PDF→MD + PDF→DOCX (heuristique texte, preview)",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "DOCX→MD + EPUB (si worker OK)",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Tests fixtures + licences",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Module data + images v2 (phase B2, teammate data)",
+        "status": "pending",
+        "dependencies": [
+          8
+        ],
+        "priority": "high",
+        "description": "src/converters/data/ : YAML↔JSON (yaml), XML↔JSON (fast-xml-parser), JSON↔CSV plat maison. Extension src/converters/image/ : TIFF↔PNG/JPG/WebP (utif), GIF decode 1re frame (omggif) + encode image fixe (gifenc), BMP↔PNG/JPG (bmp-js).",
+        "details": "Deps autorisées : yaml, fast-xml-parser, utif, omggif, gifenc, bmp-js. Licences vérifiées par paquet avant commit.",
+        "testStrategy": "Vitest fixtures réelles (tiff, gif, bmp, yaml, xml), round-trips.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "YAML↔JSON + XML↔JSON",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "JSON↔CSV plat",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "TIFF (utif) + BMP (bmp-js)",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "GIF decode/encode (omggif/gifenc)",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Tests fixtures + licences",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "title": "Finalisation v2 (phase C2, lead)",
+        "status": "pending",
+        "dependencies": [
+          9,
+          10,
+          11
+        ],
+        "priority": "high",
+        "description": "Merge branches, E2E nouvelles familles (markdown, data) + régression v1 + screenshots UI, audit licences, vignette 'convert' cds-site (TOOL_VIGNETTES + OutilsContent.astro + test), rebuild + vendorisation + PR site + deploy + smoke live, Obsidian/mémoire à jour.",
+        "details": "Gate advisor avant push (étape 9).",
+        "testStrategy": "Suite complète + E2E + smoke prod.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Merges + suite complète",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "E2E markdown + data + screenshots UI",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Vignette convert cds-site + test",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Gate advisor + push + PR site + deploy + smoke",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Obsidian + mémoire + RAG à jour",
+            "status": "pending"
+          }
+        ]
       }
     ],
     "metadata": {
       "created": "2026-07-18T08:00:00.000Z",
-      "description": "Convertisseur local v1, décomposition manuelle (gotcha parse_prd PERPLEXITY_API_KEY)"
+      "description": "Convertisseur local v1, décomposition manuelle (gotcha parse_prd PERPLEXITY_API_KEY) ; v2 T8-T12 ajoutées 2026-07-18"
     }
   }
 }

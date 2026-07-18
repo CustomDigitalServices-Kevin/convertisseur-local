@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { PDFDocument } from "pdf-lib";
 import { renderBlocksToPdf } from "./pdf-render";
-import { extractPdfText } from "./pdf-inspect-test-helper";
+import { extractPdfText } from "../office/pdf-inspect-test-helper";
 import type { HtmlBlock } from "./html-blocks";
 
 describe("renderBlocksToPdf", () => {

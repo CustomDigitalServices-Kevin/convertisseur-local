@@ -6,7 +6,7 @@ import type { ConversionOutputFile } from "../../core/types";
 import { loadWorkbook, sheetToRows } from "./xlsx-shared";
 import { stringifyCsv } from "./csv";
 import { baseName, sanitizeForFilename, MIME_TYPES } from "./naming";
-import { toArrayBuffer } from "./binary";
+import { toArrayBuffer } from "../shared/binary";
 
 function outputName(stem: string, sheetName: string, multiSheet: boolean, extension: string): string {
   const suffix = multiSheet ? `-${sanitizeForFilename(sheetName)}` : "";

@@ -5,7 +5,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { toArrayBuffer } from "./binary";
+import { toArrayBuffer } from "../shared/binary";
 
 const fixturesDir = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "tests", "fixtures");
 

@@ -2,7 +2,7 @@
 // every XLSX-facing converter in this module.
 import ExcelJS from "exceljs";
 import { ConversionError } from "../../core/types";
-import { toArrayBuffer } from "./binary";
+import { toArrayBuffer } from "../shared/binary";
 import { assertNotPasswordProtected } from "./ooxml";
 
 export async function loadWorkbook(data: ArrayBuffer): Promise<ExcelJS.Workbook> {
