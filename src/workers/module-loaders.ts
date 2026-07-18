@@ -18,4 +18,5 @@ export const MODULE_LOADERS: Partial<
   image: async () => (await import("../converters/image/module")).imageModule,
   office: async () => (await import("../converters/office/module")).officeModule,
   markdown: async () => (await import("../converters/markdown/module")).markdownModule,
+  data: async () => (await import("../converters/data/module")).dataModule,
 };

@@ -20,13 +20,17 @@
     "@jspawn/qpdf-wasm": "^0.0.2",
     "@jsquash/avif": "^2.1.1",
     "@resvg/resvg-wasm": "^2.6.2",
+    "bmp-js": "^0.1.0",
     "docx": "^9.7.1",
     "exceljs": "^4.4.0",
+    "fast-xml-parser": "^5.10.1",
     "fflate": "^0.8.3",
+    "gifenc": "^1.0.3",
     "hast-util-to-text": "^4.0.2",
     "mammoth": "^1.12.0",
     "marked": "^18.0.6",
     "mdast-util-to-string": "^4.0.0",
+    "omggif": "^1.0.10",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^6.1.200",
     "react": "^19.1.0",
@@ -37,7 +41,9 @@
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "unified": "^11.0.5"
+    "unified": "^11.0.5",
+    "utif": "^3.1.0",
+    "yaml": "^2.9.0"
   },
   "overrides": {
     "unzipper": "^0.12.5"

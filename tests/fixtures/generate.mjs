@@ -86,6 +86,54 @@ async function generateDocx() {
   writeFileSync(join(here, "sample.docx"), Buffer.from(zipped));
 }
 
+
+// 2x2 RGBA test image shared by the tiff/gif/bmp fixtures below, matching
+// the color layout of raster-fixtures.ts's PNG_2X2 (row0 = red, green;
+// row1 = blue, white) so all image-format fixtures encode the same picture.
+const RGBA_2X2 = new Uint8Array([
+  255, 0, 0, 255, 0, 255, 0, 255,
+  0, 0, 255, 255, 255, 255, 255, 255,
+]);
+
+async function generateTiff() {
+  const { default: UTIF } = await import("utif");
+  const tiff = UTIF.encodeImage(RGBA_2X2, 2, 2);
+  writeFileSync(join(here, "tiny.tiff"), Buffer.from(tiff));
+}
+
+async function generateGif() {
+  // Node's cjs-module-lexer cannot statically detect gifenc's esbuild-bundled
+  // dynamic exports() calls, so only `default` (verified via a quick probe
+  // import) carries anything under plain Node -- unlike Vite/esbuild's own
+  // bundling of gif.ts's named import, which uses real AST analysis and
+  // works fine there.
+  const { GIFEncoder, quantize, applyPalette } = (await import("gifenc")).default;
+  const palette = quantize(RGBA_2X2, 256);
+  const index = applyPalette(RGBA_2X2, palette);
+  const gif = GIFEncoder();
+  gif.writeFrame(index, 2, 2, { palette });
+  gif.finish();
+  writeFileSync(join(here, "tiny.gif"), Buffer.from(gif.bytes()));
+}
+
+async function generateBmp() {
+  const { default: bmpJs } = await import("bmp-js");
+  // bmp-js's own byte order: ABGR per pixel (see src/converters/image/bmp-js.d.ts).
+  // Same 2x2 picture as RGBA_2X2 above, channels reordered and alpha zeroed
+  // (24bit BMP carries no alpha; bmp-js hardcodes that byte to 0 on decode).
+  const abgr = Buffer.from([
+    0, 0, 0, 255, 0, 0, 255, 0,
+    0, 255, 0, 0, 0, 255, 255, 255,
+  ]);
+  const encoded = bmpJs.encode({ data: abgr, width: 2, height: 2 });
+  writeFileSync(join(here, "tiny.bmp"), Buffer.from(encoded.data));
+}
+
 await generateXlsx();
 await generateDocx();
-console.log("Fixtures written: sample-multisheet.xlsx, sample.docx");
+await generateTiff();
+await generateGif();
+await generateBmp();
+console.log(
+  "Fixtures written: sample-multisheet.xlsx, sample.docx, tiny.tiff, tiny.gif, tiny.bmp",
+);
