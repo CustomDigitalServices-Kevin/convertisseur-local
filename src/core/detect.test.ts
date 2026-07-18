@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { detectFormat } from "./detect";
+import { detectFormat, isGooglePointer } from "./detect";
 
 function buf(bytes: number[], padTo = 64): ArrayBuffer {
   const view = new Uint8Array(Math.max(bytes.length, padTo));
@@ -49,5 +49,41 @@ describe("detectFormat", () => {
 
   it("returns null for unknown content", () => {
     expect(detectFormat("mystery.bin", buf([0x00, 0x01, 0x02]))).toBeNull();
+  });
+
+  it("detects TIFF in both byte orders", () => {
+    expect(detectFormat("scan.tiff", buf([0x49, 0x49, 0x2a, 0x00]))).toBe("tiff");
+    expect(detectFormat("scan.tif", buf([0x4d, 0x4d, 0x00, 0x2a]))).toBe("tiff");
+  });
+
+  it("detects GIF from its GIF8 signature", () => {
+    const gif89a = [0x47, 0x49, 0x46, 0x38, 0x39, 0x61];
+    expect(detectFormat("anim.gif", buf(gif89a))).toBe("gif");
+  });
+
+  it("detects BMP only with a plausible DIB header, not bare BM text", () => {
+    const bmp = new Array<number>(20).fill(0);
+    bmp[0] = 0x42;
+    bmp[1] = 0x4d;
+    bmp[14] = 40; // BITMAPINFOHEADER
+    expect(detectFormat("img.bmp", buf(bmp))).toBe("bmp");
+    const fakeText = Array.from(new TextEncoder().encode("BMW sales report 2026"));
+    expect(detectFormat("notes.xyz", buf(fakeText))).toBeNull();
+  });
+
+  it("maps text extensions md/txt/yaml/xml and epub zip container", () => {
+    const text = Array.from(new TextEncoder().encode("# Title"));
+    expect(detectFormat("readme.md", buf(text))).toBe("md");
+    expect(detectFormat("notes.markdown", buf(text))).toBe("md");
+    expect(detectFormat("notes.txt", buf(text))).toBe("txt");
+    expect(detectFormat("config.yml", buf(text))).toBe("yaml");
+    expect(detectFormat("feed.xml", buf(text))).toBe("xml");
+    expect(detectFormat("book.epub", buf([0x50, 0x4b, 0x03, 0x04]))).toBe("epub");
+  });
+
+  it("flags Google Drive pointer files", () => {
+    expect(isGooglePointer("report.gdoc")).toBe(true);
+    expect(isGooglePointer("sheet.gsheet")).toBe(true);
+    expect(isGooglePointer("report.docx")).toBe(false);
   });
 });

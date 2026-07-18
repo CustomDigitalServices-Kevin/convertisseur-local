@@ -81,11 +81,13 @@ describe("buildQueueItem", () => {
   });
 
   it("flags a recognized format with no possible target", async () => {
-    const file = new File([new TextEncoder().encode('{"a":1}')], "data.json", {
-      type: "application/json",
+    // Since v2, json converts to yaml/xml/csv; a bare zip archive is the
+    // remaining recognized-but-unconvertible container.
+    const file = new File([new Uint8Array([0x50, 0x4b, 0x03, 0x04])], "archive.zip", {
+      type: "application/zip",
     });
     const item = await buildQueueItem(file);
-    expect(item.sourceFormat).toBe("json");
+    expect(item.sourceFormat).toBe("zip");
     expect(item.availableTargets).toEqual([]);
     expect(item.status).toBe("error");
     expect(item.localError).toBe("no-target");

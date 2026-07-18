@@ -15,6 +15,14 @@ export const FILE_FORMATS = [
   "json",
   "html",
   "zip",
+  "md",
+  "txt",
+  "tiff",
+  "gif",
+  "bmp",
+  "yaml",
+  "xml",
+  "epub",
 ] as const;
 
 export type FileFormat = (typeof FILE_FORMATS)[number];
@@ -80,7 +88,11 @@ export type ConversionErrorCode =
   | "password-protected"
   | "file-too-large"
   | "cancelled"
-  | "internal-error";
+  | "internal-error"
+  // Google Drive shortcut files (.gdoc/.gsheet/.gslides) contain only a JSON
+  // pointer to the cloud document — there is nothing local to convert. The UI
+  // maps this to an explanatory message ("export as DOCX from Google Docs").
+  | "gdoc-pointer";
 
 /** Messages sent from the main thread to a conversion worker. */
 export type WorkerInbound =

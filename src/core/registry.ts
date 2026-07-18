@@ -10,7 +10,7 @@ export interface ConversionEntry {
   source: FileFormat;
   target: FileFormat;
   /** Which converter module owns this pair (drives the dynamic import). */
-  module: "pdf" | "image" | "office";
+  module: "pdf" | "image" | "office" | "markdown" | "data";
 }
 
 export const CONVERSIONS: readonly ConversionEntry[] = [
@@ -43,6 +43,42 @@ export const CONVERSIONS: readonly ConversionEntry[] = [
   { source: "xlsx", target: "pdf", module: "office" },
   { source: "csv", target: "xlsx", module: "office" },
   { source: "docx", target: "pdf", module: "office" },
+  // v2 — markdown module (T10)
+  { source: "md", target: "html", module: "markdown" },
+  { source: "md", target: "pdf", module: "markdown" },
+  { source: "md", target: "docx", module: "markdown" },
+  { source: "md", target: "txt", module: "markdown" },
+  { source: "md", target: "epub", module: "markdown" },
+  { source: "html", target: "md", module: "markdown" },
+  { source: "html", target: "txt", module: "markdown" },
+  { source: "html", target: "epub", module: "markdown" },
+  { source: "docx", target: "md", module: "markdown" },
+  { source: "pdf", target: "md", module: "markdown" },
+  { source: "pdf", target: "docx", module: "markdown" },
+  { source: "pdf", target: "txt", module: "markdown" },
+  { source: "txt", target: "pdf", module: "markdown" },
+  { source: "txt", target: "md", module: "markdown" },
+  // v2 — data module (T11)
+  { source: "yaml", target: "json", module: "data" },
+  { source: "json", target: "yaml", module: "data" },
+  { source: "xml", target: "json", module: "data" },
+  { source: "json", target: "xml", module: "data" },
+  { source: "json", target: "csv", module: "data" },
+  { source: "csv", target: "json", module: "data" },
+  // v2 — image module extensions (T11)
+  { source: "tiff", target: "png", module: "image" },
+  { source: "tiff", target: "jpeg", module: "image" },
+  { source: "tiff", target: "webp", module: "image" },
+  { source: "png", target: "tiff", module: "image" },
+  { source: "jpeg", target: "tiff", module: "image" },
+  { source: "gif", target: "png", module: "image" },
+  { source: "gif", target: "webp", module: "image" },
+  { source: "png", target: "gif", module: "image" },
+  { source: "jpeg", target: "gif", module: "image" },
+  { source: "bmp", target: "png", module: "image" },
+  { source: "bmp", target: "jpeg", module: "image" },
+  { source: "png", target: "bmp", module: "image" },
+  { source: "jpeg", target: "bmp", module: "image" },
 ] as const;
 
 export function targetsFor(source: FileFormat): FileFormat[] {

@@ -45,6 +45,8 @@ const fr = {
   "error.file-too-large": "Le fichier est trop volumineux.",
   "error.cancelled": "Conversion annulée.",
   "error.internal-error": "Une erreur inattendue est survenue.",
+  "error.gdoc-pointer":
+    "Ce fichier Google (.gdoc) n'est qu'un raccourci vers le cloud : il ne contient pas le document. Ouvrez-le dans Google Docs puis exportez-le en DOCX, et déposez ce DOCX ici.",
 
   "privacy.title": "Confidentialité et RGPD",
   "privacy.back": "Retour à l'accueil",
@@ -118,6 +120,8 @@ const en: Record<MessageKey, string> = {
   "error.file-too-large": "The file is too large.",
   "error.cancelled": "Conversion cancelled.",
   "error.internal-error": "An unexpected error occurred.",
+  "error.gdoc-pointer":
+    "This Google file (.gdoc) is only a shortcut to the cloud: it does not contain the document. Open it in Google Docs, export it as DOCX, and drop that DOCX here.",
 
   "privacy.title": "Privacy & GDPR",
   "privacy.back": "Back to home",

@@ -13,6 +13,7 @@ const ERROR_MESSAGE_KEYS: Record<ConversionErrorCode, MessageKey> = {
   "file-too-large": "error.file-too-large",
   cancelled: "error.cancelled",
   "internal-error": "error.internal-error",
+  "gdoc-pointer": "error.gdoc-pointer",
 };
 
 const STATUS_MESSAGE_KEYS: Record<QueueItemStatus, MessageKey> = {
