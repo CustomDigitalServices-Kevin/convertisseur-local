@@ -1,17 +1,17 @@
-// Small binary helper shared by every office converter.
+// Small binary helper shared by every converter module.
 
 /**
  * Copies `bytes` into a freshly allocated, exactly sized ArrayBuffer.
  *
- * `Uint8Array#slice()` (no arguments) always allocates a fresh, non-shared,
- * exact-length ArrayBuffer per spec, so TypeScript's generic typed-array
- * typings narrow its `.buffer` to plain `ArrayBuffer` on their own. Every
- * byte array passed through this module is copied here before leaving a
- * converter — notably a Node `Buffer` returned by a Node-oriented library
- * like ExcelJS (Buffer extends Uint8Array, so it is a valid input here too)
- * — which also guards against a view whose backing buffer is larger than
- * the view itself (e.g. a subarray).
+ * Must NOT use `bytes.slice()`: Node's `Buffer` (which extends Uint8Array
+ * and is what `readFileSync`/ExcelJS return) OVERRIDES `.slice()` with
+ * `.subarray()` semantics — a view into the shared 8 KiB allocation pool,
+ * not a copy. For sub-pool-size inputs, `.slice().buffer` therefore leaks
+ * the whole pool: an 8192-byte buffer whose tail is unrelated process
+ * memory (caught by two converter teams on small test fixtures, 2026-07-18).
+ * `new Uint8Array(view)` copies unconditionally per spec, for both plain
+ * Uint8Arrays and Buffers, and its `.buffer` is exact-length and unshared.
  */
 export function toArrayBuffer(bytes: Uint8Array): ArrayBuffer {
-  return bytes.slice().buffer;
+  return new Uint8Array(bytes).buffer;
 }
