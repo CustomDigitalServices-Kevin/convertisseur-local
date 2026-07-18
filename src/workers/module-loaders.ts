@@ -13,4 +13,6 @@ import type { ConversionEntry } from "../core/registry";
 // module is not merged yet, not a placeholder.
 export const MODULE_LOADERS: Partial<
   Record<ConversionEntry["module"], () => Promise<ConverterModule>>
-> = {};
+> = {
+  pdf: async () => (await import("../converters/pdf/module")).pdfModule,
+};

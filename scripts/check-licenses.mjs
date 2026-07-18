@@ -18,6 +18,11 @@ const ALLOWED = new Set([
   "BlueOak-1.0.0",
   "CC-BY-4.0",
   "Python-2.0",
+  // Zlib: OSI-approved permissive license (BSD-style, no copyleft). Added
+  // 2026-07-18 -- pulled in transitively by pdf-lib (MIT, T3 pdf module)
+  // via pako@1.0.11, whose package.json declares "(MIT AND Zlib)" for its
+  // ported zlib.js portion. https://spdx.org/licenses/Zlib.html
+  "Zlib",
 ]);
 
 const root = new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");

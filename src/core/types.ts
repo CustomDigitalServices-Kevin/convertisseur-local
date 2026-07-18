@@ -42,6 +42,14 @@ export interface ConversionOptions {
   pages?: number[];
   /** Output dimension for vector rasterization (svg -> png). */
   width?: number;
+  /**
+   * Additional whole source files, in the order they should be combined.
+   * Used by PDF merge (multiple PDFs -> one) and multi-image -> PDF, where
+   * `request.data` carries the first file and each entry here is one more
+   * file appended after it. The infra sends one primary file per request;
+   * this is the seam a converter module uses for the rest.
+   */
+  extraInputs?: ArrayBuffer[];
 }
 
 export interface ConversionOutputFile {
