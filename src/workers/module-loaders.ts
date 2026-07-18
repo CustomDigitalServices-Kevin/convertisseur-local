@@ -15,4 +15,5 @@ export const MODULE_LOADERS: Partial<
   Record<ConversionEntry["module"], () => Promise<ConverterModule>>
 > = {
   pdf: async () => (await import("../converters/pdf/module")).pdfModule,
+  image: async () => (await import("../converters/image/module")).imageModule,
 };
