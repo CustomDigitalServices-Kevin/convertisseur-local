@@ -1,0 +1,58 @@
+# PRD : Convertisseur local (convertisseur de fichiers universel 100% in-browser)
+
+## Contexte
+
+Custom Digital Services publie des outils gratuits sur son site (page /outils/, précédents : générateur de devis, planche photos d'identité). Le marché des convertisseurs de fichiers est dominé par des services cloud (upload obligatoire) ou des projets open source anglophones qui ne tiennent pas la promesse 100% local (VERT.sh délègue la vidéo à un serveur). Aucun acteur ne porte un argumentaire RGPD français. Brainstorm + verdict advisor GO (2026-07-18), design complet dans Obsidian `Vault_Projets/Convertisseur Local/design-brainstorm-2026-07-18.md`.
+
+## Objectif global
+
+Livrer un convertisseur de fichiers open source (MIT) 100% in-browser, zéro upload, publié en repo GitHub public et intégré à la page outils du site CDS sous /outils/convertisseur/.
+
+## Périmètre fonctionnel (v1)
+
+- PDF vers images PNG/JPG (pdfjs-dist), par page, avec choix de résolution
+- Images vers PDF (pdf-lib) : une ou plusieurs images, ordre modifiable
+- PDF merge (plusieurs PDF en un) et split (extraction de pages) via @jspawn/qpdf-wasm
+- Images entre formats PNG/JPG/WebP (Canvas API natif) et AVIF (@jsquash), avec réglage qualité
+- SVG vers PNG (@resvg/resvg-wasm)
+- XLSX vers CSV/JSON/HTML et CSV vers XLSX (ExcelJS)
+- DOCX vers PDF en mode "aperçu" clairement étiqueté fidélité limitée (docx-preview vers HTML vers impression/PDF)
+- XLSX vers PDF via rendu HTML, fidélité moyenne assumée et étiquetée
+- UI drag-and-drop multi-fichiers, détection du format source, choix des cibles possibles, conversion par lots
+- Toutes les conversions dans des Web Workers (UI jamais bloquée), binaires WASM lazy-loadés par conversion
+- PWA offline : Service Worker met en cache app + WASM après premier chargement
+- Page "Confidentialité et RGPD" (FR/EN) expliquant le fonctionnement 100% local, et page "Licences tierces" (attributions Apache-2.0/MIT/MPL/BSD)
+- i18n FR/EN minimum (structure compatible avec les 4 locales du site CDS)
+
+## Hors périmètre (v1)
+
+- PDF vers DOCX (aucune lib OSS WASM viable)
+- Compression PDF réelle (Ghostscript/MuPDF = AGPL, contamination licence)
+- HEIC (LGPL + brevets HEVC), wasm-vips (libvips LGPL bundlé)
+- Vidéo et audio (intenables 100% local navigateur)
+- Tout backend : aucune requête réseau avec le contenu des fichiers, jamais
+
+## Contraintes techniques
+
+- Stack : Vite + React 19 + TypeScript strict (zéro any), Tailwind v4, app 100% statique sans backend (pattern éprouvé Claude Config Studio)
+- Licence produit MIT ; deps AGPL et LGPL bundlées interdites (liste blanche : Apache-2.0, MIT, BSD, MPL-2.0)
+- Web Workers pour toute conversion, lazy-loading par codec, OPFS si besoin gros fichiers
+- Tests Vitest (unitaires conversions + composants) + Playwright E2E (au moins un parcours par famille de conversion, avec vrais fichiers fixtures)
+- CSP stricte sans connect-src externe (preuve technique du zéro upload)
+- Déploiement : build statique copié vers le site CDS (VPS) sous /outils/convertisseur/ + repo GitHub public CustomDigitalServices-Kevin/convertisseur-local
+- Textes UI : FR et EN ; code et commentaires en anglais
+
+## Critères d'acceptation
+
+- Chaque conversion du périmètre v1 fonctionne sur un fichier réel de test (fixtures dans le repo) et produit un fichier téléchargeable valide
+- DevTools onglet Network : zéro requête sortante contenant des données de fichier pendant une conversion
+- L'app fonctionne hors-ligne après un premier chargement (PWA)
+- Lighthouse : pas de blocage du thread principal > 200 ms pendant une conversion (travail en workers)
+- `npm run lint`, `tsc --noEmit`, tests Vitest et E2E Playwright passent
+- Aucune dépendance AGPL/LGPL dans le lockfile (vérifiable par script licences)
+
+## Hypothèses retenues (à challenger plus tard si erronées)
+
+- Nom produit "Convertisseur local", repo `convertisseur-local`, slug site /outils/convertisseur/ (défauts annoncés à Kevin le 2026-07-18, GO "continue" sans objection)
+- ExcelJS retenu plutôt que SheetJS CE (MIT, chaîne npm standard, meilleur streaming ; SheetJS CE exige un tarball cdn.sheetjs.com hors registre npm)
+- L'intégration site CDS (entrée outils.fr.json/outils.en.json + overrides + vignette) se fait dans le repo cds-site séparément, après la v1 du convertisseur ; ce PRD couvre l'outil lui-même et prépare les textes des 4 locales

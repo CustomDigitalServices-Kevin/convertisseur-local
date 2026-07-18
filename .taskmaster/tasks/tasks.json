@@ -1,0 +1,118 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Scaffold projet (phase A, lead)",
+        "description": "Vite + React 19 + TypeScript strict + Tailwind v4 + Vitest + Playwright + ESLint + structure dossiers + i18n squelette FR/EN + LICENSE MIT + README + CI GitHub Actions (lint, tsc, tests, build) + script licence-check (liste blanche Apache-2.0/MIT/BSD/MPL-2.0, refus AGPL/LGPL).",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "high",
+        "details": "Pattern Claude Config Studio (app statique sans backend). Node LTS. Zéro any, satisfies, pas de non-null assertion. Commit initial sur main.",
+        "testStrategy": "npm run lint + tsc --noEmit + vitest run passent sur le squelette ; CI verte en local via act non requise.",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Noyau conversion (phase A, lead)",
+        "description": "Registre typé des conversions (format source vers cibles possibles), détection de format par magic bytes + extension, infrastructure Web Worker (messaging typé, progression, annulation), lazy-loading des modules de conversion par import() dynamique, téléchargement des résultats (fichier unique ou ZIP client-side pour les lots).",
+        "status": "pending",
+        "dependencies": [1],
+        "priority": "high",
+        "details": "Interfaces stables consommées par les tâches 3-6 : ConversionTask, ConverterModule, WorkerBridge. Documentées dans src/core/README.md pour les teammates.",
+        "testStrategy": "Tests Vitest unitaires : détection magic bytes sur fixtures réelles, registre, protocole worker (happy path + erreur + annulation).",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Conversions PDF (phase B, teammate pdf)",
+        "description": "PDF vers PNG/JPG par page avec résolution (pdfjs-dist), images vers PDF avec ordre (pdf-lib), merge PDF et split/extraction de pages (@jspawn/qpdf-wasm). Le tout via les interfaces du noyau, dans des workers.",
+        "status": "pending",
+        "dependencies": [2],
+        "priority": "high",
+        "details": "Licences : pdfjs-dist Apache-2.0, pdf-lib MIT, @jspawn/qpdf-wasm Apache-2.0. Fixtures PDF réelles dans tests/fixtures.",
+        "testStrategy": "Vitest : chaque conversion sur fixture réelle produit une sortie valide (PNG décodable, PDF ouvrable par pdf-lib). Cas d'erreur : PDF chiffré, fichier corrompu.",
+        "subtasks": [
+          { "id": 1, "title": "PDF vers PNG/JPG par page avec résolution (pdfjs-dist)", "status": "pending" },
+          { "id": 2, "title": "Images vers PDF avec ordre des pages (pdf-lib)", "status": "pending" },
+          { "id": 3, "title": "Merge PDF (@jspawn/qpdf-wasm)", "status": "pending" },
+          { "id": 4, "title": "Split/extraction de pages (@jspawn/qpdf-wasm)", "status": "pending" },
+          { "id": 5, "title": "Tests fixtures + cas erreur (PDF chiffré, corrompu)", "status": "pending" }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Conversions images (phase B, teammate images)",
+        "description": "PNG/JPG/WebP via Canvas API natif (avec réglage qualité), AVIF via @jsquash (encode/decode, lazy-load), SVG vers PNG via @resvg/resvg-wasm (avec dimension cible).",
+        "status": "pending",
+        "dependencies": [2],
+        "priority": "high",
+        "details": "Licences : @jsquash Apache-2.0, @resvg/resvg-wasm MPL-2.0. Vérifier la licence exacte de chaque sous-package @jsquash installé avant commit (règle D2).",
+        "testStrategy": "Vitest (environnement navigateur ou happy-dom + mocks canvas si nécessaire, sinon tests Playwright dédiés) : conversion round-trip sur fixtures, qualité paramétrée, SVG avec viewBox.",
+        "subtasks": [
+          { "id": 1, "title": "PNG/JPG/WebP via Canvas API avec réglage qualité", "status": "pending" },
+          { "id": 2, "title": "AVIF encode/decode (@jsquash, lazy-load)", "status": "pending" },
+          { "id": 3, "title": "SVG vers PNG (@resvg/resvg-wasm, dimension cible)", "status": "pending" },
+          { "id": 4, "title": "Vérification licence exacte de chaque sous-package @jsquash installé", "status": "pending" },
+          { "id": 5, "title": "Tests round-trip fixtures", "status": "pending" }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Conversions Office (phase B, teammate office)",
+        "description": "XLSX vers CSV/JSON/HTML et CSV vers XLSX (ExcelJS), XLSX vers PDF via rendu HTML (fidélité moyenne étiquetée), DOCX vers PDF mode aperçu via docx-preview vers HTML vers PDF (fidélité limitée étiquetée dans l'UI et la doc).",
+        "status": "pending",
+        "dependencies": [2],
+        "priority": "high",
+        "details": "Licences : ExcelJS MIT, docx-preview Apache-2.0, mammoth BSD-2-Clause en fallback si docx-preview insuffisant. L'étiquette fidélité fait partie du contrat de sortie du module (metadata fidelity: 'preview').",
+        "testStrategy": "Vitest : XLSX fixture multi-feuilles vers CSV/JSON corrects, CSV vers XLSX relisible par ExcelJS, DOCX fixture vers PDF non vide avec texte extractible.",
+        "subtasks": [
+          { "id": 1, "title": "XLSX vers CSV/JSON/HTML (ExcelJS, multi-feuilles)", "status": "pending" },
+          { "id": 2, "title": "CSV vers XLSX (ExcelJS)", "status": "pending" },
+          { "id": 3, "title": "XLSX vers PDF via rendu HTML, fidélité moyenne étiquetée", "status": "pending" },
+          { "id": 4, "title": "DOCX vers PDF mode aperçu (docx-preview, étiquette fidélité)", "status": "pending" },
+          { "id": 5, "title": "Tests fixtures multi-feuilles + DOCX texte extractible", "status": "pending" }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "UI complète (phase B, teammate ui)",
+        "description": "Drag-and-drop multi-fichiers, détection et affichage des cibles possibles, conversion par lots avec progression par fichier, téléchargement unitaire et ZIP, i18n FR/EN, pages Confidentialité/RGPD (FR/EN) et Licences tierces, bandeau '100% local, vos fichiers ne quittent jamais votre appareil'.",
+        "status": "pending",
+        "dependencies": [2],
+        "priority": "high",
+        "details": "Tailwind v4, design sobre cohérent charte CDS (référence visuelle : pages outils existantes du site). Travaille contre les interfaces du noyau avec un module de conversion factice de dev documenté (retiré du build prod) tant que 3-5 ne sont pas mergés.",
+        "testStrategy": "Vitest + React Testing Library : drop de fichiers, sélection cible, états (en cours, succès, erreur), bascule FR/EN, liens pages RGPD/licences.",
+        "subtasks": [
+          { "id": 1, "title": "Drag-and-drop multi-fichiers + détection format + cibles possibles", "status": "pending" },
+          { "id": 2, "title": "File de conversion par lots : progression, erreurs, téléchargement unitaire + ZIP", "status": "pending" },
+          { "id": 3, "title": "i18n FR/EN + bandeau 100% local", "status": "pending" },
+          { "id": 4, "title": "Pages Confidentialité/RGPD (FR/EN) et Licences tierces", "status": "pending" },
+          { "id": 5, "title": "Tests RTL états + bascule locale ; module factice dev isolé (src/dev/, exclu build prod)", "status": "pending" }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Intégration finale, PWA, E2E, CSP (phase C, lead)",
+        "description": "Brancher les modules réels dans l'UI (retrait du module factice), PWA (Service Worker, cache app + WASM, offline), CSP stricte sans connect-src externe, E2E Playwright un parcours réel par famille de conversion (fixtures), audit licences du lockfile, README final + textes des 4 locales pour la page outils du site CDS.",
+        "status": "pending",
+        "dependencies": [3, 4, 5, 6],
+        "priority": "high",
+        "details": "Vérification manuelle : DevTools Network zéro requête sortante pendant conversion ; mode avion après premier chargement.",
+        "testStrategy": "E2E Playwright complet vert, script licence-check vert, build prod servi localement testé offline.",
+        "subtasks": [
+          { "id": 1, "title": "Branchement des modules réels dans l'UI, retrait du module factice", "status": "pending" },
+          { "id": 2, "title": "Check automatisé anti-fuite : stub dev absent du bundle prod (grep dist en CI + test)", "status": "pending" },
+          { "id": 3, "title": "PWA : Service Worker, cache app + WASM, test offline réel", "status": "pending" },
+          { "id": 4, "title": "CSP stricte sans connect-src externe + vérif Network zéro requête sortante", "status": "pending" },
+          { "id": 5, "title": "E2E Playwright : un parcours réel par famille (PDF, images, Office)", "status": "pending" },
+          { "id": 6, "title": "Audit licences lockfile + README final + textes 4 locales pour cds-site", "status": "pending" }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2026-07-18T08:00:00.000Z",
+      "description": "Convertisseur local v1, décomposition manuelle (gotcha parse_prd PERPLEXITY_API_KEY)"
+    }
+  }
+}
