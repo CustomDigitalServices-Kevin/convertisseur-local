@@ -185,7 +185,7 @@
         "id": 7,
         "title": "Intégration finale, PWA, E2E, CSP (phase C, lead)",
         "description": "Brancher les modules réels dans l'UI (retrait du module factice), PWA (Service Worker, cache app + WASM, offline), CSP stricte sans connect-src externe, E2E Playwright un parcours réel par famille de conversion (fixtures), audit licences du lockfile, README final + textes des 4 locales pour la page outils du site CDS.",
-        "status": "in-progress",
+        "status": "done",
         "dependencies": [
           3,
           4,
@@ -199,32 +199,32 @@
           {
             "id": 1,
             "title": "Branchement des modules réels dans l'UI, retrait du module factice",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "Check automatisé anti-fuite : stub dev absent du bundle prod (grep dist en CI + test)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "PWA : Service Worker, cache app + WASM, test offline réel",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "CSP stricte sans connect-src externe + vérif Network zéro requête sortante",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "E2E Playwright : un parcours réel par famille (PDF, images, Office)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 6,
             "title": "Audit licences lockfile + README final + textes 4 locales pour cds-site",
-            "status": "pending"
+            "status": "done"
           }
         ]
       }
