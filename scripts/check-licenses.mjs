@@ -18,7 +18,23 @@ const ALLOWED = new Set([
   "BlueOak-1.0.0",
   "CC-BY-4.0",
   "Python-2.0",
+  // Zlib: OSI-approved permissive license, same tier as MIT/BSD. Needed for
+  // pako (transitive via jszip and pdf-lib's font/image helpers), which
+  // declares the compound expression "(MIT AND Zlib)".
+  "Zlib",
 ]);
+
+// Packages whose npm-registry "license" field is legacy free text instead of
+// a valid SPDX id. Each entry was manually verified against the upstream
+// LICENSE file (source + date noted) so the exception is auditable, rather
+// than loosening the string-matching rules for everyone.
+const VERIFIED_EXCEPTIONS = {
+  // duck@0.1.x (transitive: mammoth -> lop -> duck) declares the legacy
+  // free-text "BSD" string. Verified 2026-07-18 against
+  // https://github.com/mwilliamson/duck.js/blob/master/LICENSE: full
+  // BSD-2-Clause text, same author as mammoth itself.
+  duck: "BSD-2-Clause",
+};
 
 const root = new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
 const nodeModules = join(root, "node_modules");
@@ -62,7 +78,9 @@ for (const dir of listPackageDirs(nodeModules)) {
     typeof manifest.license === "string"
       ? manifest.license
       : (manifest.license?.type ?? manifest.licenses?.[0]?.type ?? "UNKNOWN");
-  if (!licenseExpressionAllowed(license)) {
+  const exception = VERIFIED_EXCEPTIONS[manifest.name ?? ""];
+  const allowed = exception !== undefined ? true : licenseExpressionAllowed(license);
+  if (!allowed) {
     violations.push(`${manifest.name ?? dir}@${manifest.version ?? "?"} -> ${license}`);
   }
 }
