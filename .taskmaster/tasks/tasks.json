@@ -387,7 +387,7 @@
       {
         "id": 12,
         "title": "Finalisation v2 (phase C2, lead)",
-        "status": "in-progress",
+        "status": "done",
         "dependencies": [
           9,
           10,
@@ -401,27 +401,27 @@
           {
             "id": 1,
             "title": "Merges + suite complète",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "E2E markdown + data + screenshots UI",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "Vignette convert cds-site + test",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "Gate advisor + push + PR site + deploy + smoke",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "Obsidian + mémoire + RAG à jour",
-            "status": "pending"
+            "status": "done"
           }
         ]
       }
