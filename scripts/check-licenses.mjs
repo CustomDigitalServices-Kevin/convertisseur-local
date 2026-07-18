@@ -19,11 +19,23 @@ const ALLOWED = new Set([
   "CC-BY-4.0",
   "Python-2.0",
   // Zlib: OSI-approved permissive license (BSD-style, no copyleft). Added
-  // 2026-07-18 -- pulled in transitively by pdf-lib (MIT, T3 pdf module)
-  // via pako@1.0.11, whose package.json declares "(MIT AND Zlib)" for its
-  // ported zlib.js portion. https://spdx.org/licenses/Zlib.html
+  // 2026-07-18 -- pulled in transitively by pdf-lib (T3) via pako@1.0.11
+  // ("(MIT AND Zlib)"), and by jszip via the office module (T5).
+  // https://spdx.org/licenses/Zlib.html
   "Zlib",
 ]);
+
+// Packages whose npm-registry "license" field is legacy free text instead of
+// a valid SPDX id. Each entry was manually verified against the upstream
+// LICENSE file (source + date noted) so the exception is auditable, rather
+// than loosening the string-matching rules for everyone.
+const VERIFIED_EXCEPTIONS = {
+  // duck@0.1.x (transitive: mammoth -> lop -> duck) declares the legacy
+  // free-text "BSD" string. Verified 2026-07-18 against
+  // https://github.com/mwilliamson/duck.js/blob/master/LICENSE: full
+  // BSD-2-Clause text, same author as mammoth itself.
+  duck: "BSD-2-Clause",
+};
 
 const root = new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
 const nodeModules = join(root, "node_modules");
@@ -67,7 +79,9 @@ for (const dir of listPackageDirs(nodeModules)) {
     typeof manifest.license === "string"
       ? manifest.license
       : (manifest.license?.type ?? manifest.licenses?.[0]?.type ?? "UNKNOWN");
-  if (!licenseExpressionAllowed(license)) {
+  const exception = VERIFIED_EXCEPTIONS[manifest.name ?? ""];
+  const allowed = exception !== undefined ? true : licenseExpressionAllowed(license);
+  if (!allowed) {
     violations.push(`${manifest.name ?? dir}@${manifest.version ?? "?"} -> ${license}`);
   }
 }

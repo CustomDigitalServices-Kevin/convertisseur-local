@@ -16,4 +16,5 @@ export const MODULE_LOADERS: Partial<
 > = {
   pdf: async () => (await import("../converters/pdf/module")).pdfModule,
   image: async () => (await import("../converters/image/module")).imageModule,
+  office: async () => (await import("../converters/office/module")).officeModule,
 };
