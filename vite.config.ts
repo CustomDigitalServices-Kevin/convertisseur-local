@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import type { Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import { VitePWA } from "vite-plugin-pwa";
 
 // Strict CSP injected at build time only (the dev server needs inline
 // scripts for HMR). connect-src 'self' is the technical enforcement of the
@@ -39,7 +40,33 @@ function injectCsp(): Plugin {
 // relative so the same build also works on GitHub Pages or a local preview.
 export default defineConfig({
   base: "./",
-  plugins: [react(), tailwindcss(), injectCsp()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    injectCsp(),
+    VitePWA({
+      registerType: "autoUpdate",
+      // External registerSW.js file, not an inline script: keeps the strict
+      // CSP (script-src 'self') intact.
+      injectRegister: "script-defer",
+      workbox: {
+        // WASM codecs are the whole point of offline support; the Workbox
+        // default cap (2 MiB) would silently exclude them (advisor 2026-07-18).
+        globPatterns: ["**/*.{js,css,html,wasm,svg,png,woff2}"],
+        maximumFileSizeToCacheInBytes: 15 * 1024 * 1024,
+      },
+      manifest: {
+        name: "Convertisseur local",
+        short_name: "Convertisseur",
+        description:
+          "Convert PDF, images, Word and Excel files entirely in your browser. No upload.",
+        theme_color: "#3b5bdb",
+        background_color: "#ffffff",
+        display: "standalone",
+        icons: [{ src: "icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" }],
+      },
+    }),
+  ],
   build: {
     target: "es2022",
     sourcemap: false,

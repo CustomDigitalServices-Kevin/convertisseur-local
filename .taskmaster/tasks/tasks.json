@@ -185,7 +185,7 @@
         "id": 7,
         "title": "Intégration finale, PWA, E2E, CSP (phase C, lead)",
         "description": "Brancher les modules réels dans l'UI (retrait du module factice), PWA (Service Worker, cache app + WASM, offline), CSP stricte sans connect-src externe, E2E Playwright un parcours réel par famille de conversion (fixtures), audit licences du lockfile, README final + textes des 4 locales pour la page outils du site CDS.",
-        "status": "pending",
+        "status": "in-progress",
         "dependencies": [
           3,
           4,
