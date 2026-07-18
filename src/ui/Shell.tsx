@@ -5,95 +5,161 @@ import type { Locale } from "../i18n/messages";
 import { ConversionQueue } from "./ConversionQueue";
 import { PrivacyPage } from "./PrivacyPage";
 import { LicensesPage } from "./LicensesPage";
+import { BoltIcon, LockIcon, LogoIcon, WrenchIcon } from "./icons";
 
 type Page = "home" | "privacy" | "licenses";
+
+const NAV_LINK_CLASSES =
+  "rounded-[10px] px-3 py-1.5 text-[13.5px] text-muted transition-colors duration-150 hover:bg-white/5 hover:text-txt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange";
+
+interface TrustCard {
+  icon: ReactElement;
+  title: string;
+  body: string;
+}
 
 export function Shell(): ReactElement {
   const { locale, setLocale, t } = useLocale();
   const [page, setPage] = useState<Page>("home");
   const nextLocale: Locale = locale === "fr" ? "en" : "fr";
 
+  const trustCards: TrustCard[] = [
+    { icon: <LockIcon className="size-3.5" />, title: t("trust.gdpr.title"), body: t("trust.gdpr.body") },
+    { icon: <BoltIcon className="size-3.5" />, title: t("trust.offline.title"), body: t("trust.offline.body") },
+    {
+      icon: <WrenchIcon className="size-3.5" />,
+      title: t("trust.opensource.title"),
+      body: t("trust.opensource.body"),
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-brand-50 font-sans text-brand-900">
-      <header className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-4 px-4 py-6">
-        <span className="text-xl font-bold">{t("app.title")}</span>
+    <div className="min-h-screen bg-bg font-sans text-txt antialiased">
+      <header className="sticky top-0 z-10 border-b border-line bg-bg/72 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-4xl items-center justify-between gap-4 px-4">
+          <span className="flex items-center gap-2.5 font-bold tracking-tight">
+            <span className="grid size-[30px] shrink-0 place-items-center rounded-[9px] bg-linear-to-br from-orange to-orange-light">
+              <LogoIcon className="size-4" />
+            </span>
+            {t("app.title")}
+          </span>
 
-        <nav className="flex flex-wrap items-center gap-2 text-sm">
-          <button
-            type="button"
-            className="rounded px-2 py-1 hover:underline"
-            aria-current={page === "home" ? "page" : undefined}
-            onClick={() => {
-              setPage("home");
-            }}
-          >
-            {t("nav.home")}
-          </button>
-          <button
-            type="button"
-            className="rounded px-2 py-1 hover:underline"
-            aria-current={page === "privacy" ? "page" : undefined}
-            onClick={() => {
-              setPage("privacy");
-            }}
-          >
-            {t("nav.privacy")}
-          </button>
-          <button
-            type="button"
-            className="rounded px-2 py-1 hover:underline"
-            aria-current={page === "licenses" ? "page" : undefined}
-            onClick={() => {
-              setPage("licenses");
-            }}
-          >
-            {t("nav.licenses")}
-          </button>
-        </nav>
+          <nav className="flex flex-wrap items-center gap-1">
+            <button
+              type="button"
+              className={NAV_LINK_CLASSES}
+              aria-current={page === "home" ? "page" : undefined}
+              onClick={() => {
+                setPage("home");
+              }}
+            >
+              {t("nav.home")}
+            </button>
+            <button
+              type="button"
+              className={NAV_LINK_CLASSES}
+              aria-current={page === "privacy" ? "page" : undefined}
+              onClick={() => {
+                setPage("privacy");
+              }}
+            >
+              {t("nav.privacy")}
+            </button>
+            <button
+              type="button"
+              className={NAV_LINK_CLASSES}
+              aria-current={page === "licenses" ? "page" : undefined}
+              onClick={() => {
+                setPage("licenses");
+              }}
+            >
+              {t("nav.licenses")}
+            </button>
+          </nav>
 
-        <button
-          type="button"
-          className="rounded border border-brand-500 px-3 py-1 text-sm"
-          data-testid="locale-toggle"
-          onClick={() => {
-            setLocale(nextLocale);
-          }}
-        >
-          {nextLocale.toUpperCase()}
-        </button>
+          <button
+            type="button"
+            className="rounded-full border border-line-strong px-3 py-1.5 text-xs font-bold tracking-wide transition-colors hover:border-orange hover:text-orange focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange"
+            data-testid="locale-toggle"
+            onClick={() => {
+              setLocale(nextLocale);
+            }}
+          >
+            {nextLocale.toUpperCase()}
+          </button>
+        </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-4 pb-16">
+      <main>
         {page === "home" && (
-          <div className="flex flex-col gap-6">
-            <div>
-              <h1 className="text-2xl font-bold">{t("app.title")}</h1>
-              <p className="mt-2 text-lg">{t("app.tagline")}</p>
-            </div>
-            <p
-              className="rounded bg-brand-500 px-4 py-3 font-medium text-white"
-              data-testid="local-banner"
-            >
-              {t("app.localBanner")}
-            </p>
-            <ConversionQueue />
+          <div className="flex flex-col gap-14 pb-20">
+            <section className="hero-halo relative overflow-hidden px-4 pt-16 pb-4 text-center">
+              <div className="relative mx-auto max-w-3xl">
+                <p
+                  data-testid="local-banner"
+                  className="mx-auto mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-green/22 bg-green/8 px-3.5 py-1.5 text-[12.5px] font-semibold text-green"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="size-[7px] shrink-0 rounded-full bg-green shadow-[0_0_10px_var(--color-green)]"
+                  />
+                  {t("app.localBanner")}
+                </p>
+                <h1 className="bg-linear-to-r from-orange to-orange-light bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl">
+                  {t("app.title")}
+                </h1>
+                <p className="mx-auto mt-4 max-w-xl text-base text-muted sm:text-[16.5px]">{t("app.tagline")}</p>
+              </div>
+            </section>
+
+            <section className="px-4">
+              <div className="mx-auto max-w-3xl">
+                <ConversionQueue />
+              </div>
+            </section>
+
+            <section className="px-4">
+              <div className="mx-auto grid max-w-3xl gap-3.5 sm:grid-cols-3">
+                {trustCards.map((card) => (
+                  <div key={card.title} className="rounded-2xl border border-line bg-panel p-5">
+                    <h3 className="mb-1.5 flex items-center gap-2 text-[13.5px] font-bold text-txt">
+                      <span className="grid size-6.5 shrink-0 place-items-center rounded-lg bg-orange-soft text-orange">
+                        {card.icon}
+                      </span>
+                      {card.title}
+                    </h3>
+                    <p className="text-[12.8px] text-muted">{card.body}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
           </div>
         )}
+
         {page === "privacy" && (
-          <PrivacyPage
-            onBack={() => {
-              setPage("home");
-            }}
-          />
+          <div className="mx-auto max-w-3xl px-4 pb-20">
+            <PrivacyPage
+              onBack={() => {
+                setPage("home");
+              }}
+            />
+          </div>
         )}
+
         {page === "licenses" && (
-          <LicensesPage
-            onBack={() => {
-              setPage("home");
-            }}
-          />
+          <div className="mx-auto max-w-3xl px-4 pb-20">
+            <LicensesPage
+              onBack={() => {
+                setPage("home");
+              }}
+            />
+          </div>
         )}
       </main>
+
+      <footer className="border-t border-line px-4 py-6 text-center text-[12.5px] text-faint">
+        {t("footer.brand")}
+      </footer>
     </div>
   );
 }

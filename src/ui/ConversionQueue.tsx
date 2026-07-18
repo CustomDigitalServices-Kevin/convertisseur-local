@@ -10,6 +10,15 @@ import { FileQueueItem } from "./FileQueueItem";
 import type { QueueItem } from "./queue-types";
 import { buildQueueItem, intersect, isConversionFailure, isFileFormat, runConversion, withoutExtension } from "./queue-utils";
 
+const GHOST_BUTTON =
+  "rounded-xl border border-line-strong px-4 py-2 text-sm font-semibold text-muted transition-colors hover:border-faint hover:text-txt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange disabled:cursor-not-allowed disabled:opacity-40";
+
+const PRIMARY_BUTTON =
+  "rounded-xl bg-linear-to-br from-orange to-orange-mid px-5 py-2 text-sm font-semibold text-white shadow-[0_10px_26px_-12px_rgba(255,107,0,0.55)] transition-transform hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-40";
+
+const SELECT_CLASSES =
+  "mt-1 rounded-lg border border-line-strong bg-panel-2 px-2.5 py-1.5 text-sm text-txt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange";
+
 export function ConversionQueue(): ReactElement {
   const { t } = useLocale();
   const [queue, setQueue] = useState<QueueItem[]>([]);
@@ -147,73 +156,57 @@ export function ConversionQueue(): ReactElement {
   }, [successfulOutputs]);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <Dropzone onFilesAdded={handleFilesAdded} />
 
       {queue.length === 0 ? (
-        <p className="text-center text-sm text-brand-900/60">{t("queue.empty")}</p>
+        <p className="text-center text-sm text-faint">{t("queue.empty")}</p>
       ) : (
         <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-end gap-3">
-            {commonTargets.length > 0 && (
-              <label className="flex flex-col text-xs text-brand-900/70">
-                {t("queue.globalTargetLabel")}
-                <select
-                  className="mt-1 rounded border border-brand-500/40 px-2 py-1 text-sm"
-                  value={globalTarget}
-                  onChange={(event) => {
-                    handleGlobalTargetChange(event.target.value);
-                  }}
-                >
-                  <option value="" disabled>
-                    {t("queue.selectTargetPlaceholder")}
-                  </option>
-                  {commonTargets.map((target) => (
-                    <option key={target} value={target}>
-                      {target.toUpperCase()}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-[17px] font-bold tracking-tight text-txt">{t("queue.title")}</h2>
+            <div className="flex flex-wrap items-end gap-3">
+              {commonTargets.length > 0 && (
+                <label className="flex flex-col text-xs text-muted">
+                  {t("queue.globalTargetLabel")}
+                  <select
+                    className={SELECT_CLASSES}
+                    value={globalTarget}
+                    onChange={(event) => {
+                      handleGlobalTargetChange(event.target.value);
+                    }}
+                  >
+                    <option value="" disabled>
+                      {t("queue.selectTargetPlaceholder")}
                     </option>
-                  ))}
-                </select>
-              </label>
-            )}
-            {commonTargets.length > 0 && (
-              <button
-                type="button"
-                className="rounded border border-brand-500/40 px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
-                disabled={globalTarget === ""}
-                onClick={handleApplyToAll}
-              >
-                {t("queue.applyToAll")}
+                    {commonTargets.map((target) => (
+                      <option key={target} value={target}>
+                        {target.toUpperCase()}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              {commonTargets.length > 0 && (
+                <button type="button" className={GHOST_BUTTON} disabled={globalTarget === ""} onClick={handleApplyToAll}>
+                  {t("queue.applyToAll")}
+                </button>
+              )}
+              <button type="button" className={PRIMARY_BUTTON} disabled={!hasConvertible} onClick={handleConvertAll}>
+                {t("queue.convertAll")}
               </button>
-            )}
-            <button
-              type="button"
-              className="rounded bg-brand-600 px-4 py-1.5 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
-              disabled={!hasConvertible}
-              onClick={handleConvertAll}
-            >
-              {t("queue.convertAll")}
-            </button>
-            <button
-              type="button"
-              className="rounded border border-brand-500/40 px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
-              disabled={!hasActive}
-              onClick={handleCancelAll}
-            >
-              {t("queue.cancelAll")}
-            </button>
-            {successfulOutputs.length > 0 && (
-              <button
-                type="button"
-                className="rounded border border-brand-500/40 px-3 py-1.5 text-sm"
-                onClick={handleDownloadAllZip}
-              >
-                {t("queue.downloadAllZip")}
+              <button type="button" className={GHOST_BUTTON} disabled={!hasActive} onClick={handleCancelAll}>
+                {t("queue.cancelAll")}
               </button>
-            )}
+              {successfulOutputs.length > 0 && (
+                <button type="button" className={GHOST_BUTTON} onClick={handleDownloadAllZip}>
+                  {t("queue.downloadAllZip")}
+                </button>
+              )}
+            </div>
           </div>
 
-          <ul className="flex flex-col gap-3" aria-label={t("queue.title")}>
+          <ul className="flex flex-col gap-2.5" aria-label={t("queue.title")}>
             {queue.map((item) => (
               <FileQueueItem
                 key={item.id}

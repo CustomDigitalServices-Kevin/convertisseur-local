@@ -1,15 +1,25 @@
-import { useCallback, useId, useState } from "react";
+import { useCallback, useId, useMemo, useState } from "react";
 import type { ChangeEvent, DragEvent, ReactElement } from "react";
+import { CONVERSIONS } from "../core/registry";
 import { useLocale } from "../i18n/locale-context";
+import { UploadIcon } from "./icons";
 
 interface DropzoneProps {
   onFilesAdded: (files: File[]) => void;
+}
+
+// Every format the app can accept as a source, derived from the conversion
+// registry itself (not a hand-maintained list) so a new converter module
+// automatically grows this row of pills.
+function sourceFormats(): string[] {
+  return Array.from(new Set(CONVERSIONS.map((entry) => entry.source))).sort();
 }
 
 export function Dropzone({ onFilesAdded }: DropzoneProps): ReactElement {
   const { t } = useLocale();
   const [isActive, setIsActive] = useState(false);
   const inputId = useId();
+  const formats = useMemo(sourceFormats, []);
 
   const handleDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -41,25 +51,45 @@ export function Dropzone({ onFilesAdded }: DropzoneProps): ReactElement {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-6 py-12 text-center transition-colors ${
-        isActive ? "border-brand-600 bg-brand-50" : "border-brand-500/40 bg-white"
+      className={`relative mx-auto max-w-3xl rounded-[22px] p-[2px] transition-all duration-300 ${
+        isActive
+          ? "dropzone-border-active -translate-y-0.5 shadow-[0_24px_60px_-28px_rgba(255,107,0,0.45)]"
+          : "dropzone-border hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-28px_rgba(255,107,0,0.35)]"
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       data-testid="dropzone"
     >
-      <label htmlFor={inputId} className="cursor-pointer text-base font-medium text-brand-900">
-        {isActive ? t("dropzone.hintActive") : t("dropzone.hint")}
+      <label
+        htmlFor={inputId}
+        className="dropzone-inner-glow flex cursor-pointer flex-col items-center gap-3.5 rounded-[20px] px-8 py-12 text-center focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-orange"
+      >
+        <span className="grid size-16 place-items-center rounded-2xl border border-orange/30 bg-orange-soft">
+          <UploadIcon className="size-7.5 text-orange" />
+        </span>
+        <span className="text-lg font-bold text-txt">
+          {isActive ? t("dropzone.hintActive") : t("dropzone.hint")}
+        </span>
+        <span className="flex flex-wrap justify-center gap-1.5 pt-1.5">
+          {formats.map((format) => (
+            <span
+              key={format}
+              className="rounded-[7px] border border-line bg-panel-2 px-2.5 py-1 text-[11px] font-bold tracking-wider text-muted uppercase"
+            >
+              {format}
+            </span>
+          ))}
+        </span>
+        <input
+          id={inputId}
+          type="file"
+          multiple
+          className="sr-only"
+          aria-label={t("dropzone.browseLabel")}
+          onChange={handleChange}
+        />
       </label>
-      <input
-        id={inputId}
-        type="file"
-        multiple
-        className="sr-only"
-        aria-label={t("dropzone.browseLabel")}
-        onChange={handleChange}
-      />
     </div>
   );
 }

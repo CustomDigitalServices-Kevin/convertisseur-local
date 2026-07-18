@@ -1,10 +1,65 @@
 @import "tailwindcss";
 
 @theme {
-  /* CDS-neutral palette placeholder; aligned with the CDS site charter during T7. */
-  --color-brand-50: oklch(0.97 0.02 250);
-  --color-brand-500: oklch(0.55 0.15 250);
-  --color-brand-600: oklch(0.48 0.16 250);
-  --color-brand-900: oklch(0.25 0.08 250);
+  /* Premium dark palette — spec: docs/design/convertisseur-premium.html (T9).
+     Dark-only design: no light variant. */
+  --color-bg: #0b0b0d;
+  --color-panel: #0f0f11;
+  --color-panel-2: #131316;
+  --color-line: rgba(255, 255, 255, 0.07);
+  --color-line-strong: rgba(255, 255, 255, 0.12);
+  --color-txt: #f4f4f5;
+  --color-muted: #9b9ba3;
+  --color-faint: #5b5b63;
+  --color-orange: #ff6b00;
+  --color-orange-mid: #ff8c33;
+  --color-orange-light: #ffb066;
+  --color-orange-soft: rgba(255, 107, 0, 0.14);
+  --color-green: #7fd6a8;
+  --color-red: #ff8f8f;
+  --color-blue: #9cc4ff;
+  --color-violet: #c7a6ff;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * Bespoke multi-stop / radial gradients the Tailwind from/via/to utilities
+ * cannot express (more than 3 stops, explicit angles). Kept as real
+ * stylesheet rules loaded under `style-src 'self'` — never as inline
+ * `style="..."` attributes, which the strict CSP's `style-src-attr`
+ * directive does not universally allow (Safari has no support for it).
+ */
+.hero-halo::before {
+  content: "";
+  position: absolute;
+  inset: -40% -20% auto;
+  height: 130%;
+  background: radial-gradient(52% 42% at 50% 8%, rgba(255, 107, 0, 0.16), transparent 62%);
+  pointer-events: none;
+}
+
+.dropzone-border {
+  background: linear-gradient(
+    140deg,
+    rgba(255, 107, 0, 0.55),
+    rgba(255, 107, 0, 0.08) 38%,
+    rgba(255, 255, 255, 0.06) 62%,
+    rgba(255, 107, 0, 0.3)
+  );
+}
+
+.dropzone-border-active {
+  background: linear-gradient(
+    140deg,
+    rgba(255, 107, 0, 0.85),
+    rgba(255, 107, 0, 0.2) 38%,
+    rgba(255, 255, 255, 0.1) 62%,
+    rgba(255, 107, 0, 0.55)
+  );
+}
+
+.dropzone-inner-glow {
+  background:
+    radial-gradient(90% 70% at 50% 0%, rgba(255, 107, 0, 0.07), transparent 55%),
+    var(--color-panel);
 }

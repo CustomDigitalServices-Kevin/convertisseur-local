@@ -26,27 +26,27 @@ export function LicensesPage({ onBack }: LicensesPageProps): ReactElement {
   const { t } = useLocale();
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold">{t("licenses.title")}</h1>
-      <p className="text-brand-900/80">{t("licenses.intro")}</p>
+    <div className="flex flex-col gap-6 pt-10">
+      <h1 className="text-3xl font-extrabold tracking-tight text-txt">{t("licenses.title")}</h1>
+      <p className="text-[14.5px] text-muted">{t("licenses.intro")}</p>
 
-      <div className="overflow-x-auto rounded-lg border border-brand-500/20">
+      <div className="overflow-x-auto rounded-2xl border border-line bg-panel">
         <table className="w-full text-left text-sm">
-          <thead className="bg-brand-50">
+          <thead className="bg-panel-2">
             <tr>
-              <th scope="col" className="px-4 py-2 font-semibold text-brand-900">
+              <th scope="col" className="px-4 py-2.5 font-semibold text-txt">
                 {t("licenses.columnLibrary")}
               </th>
-              <th scope="col" className="px-4 py-2 font-semibold text-brand-900">
+              <th scope="col" className="px-4 py-2.5 font-semibold text-txt">
                 {t("licenses.columnLicense")}
               </th>
             </tr>
           </thead>
           <tbody>
             {RUNTIME_LICENSES.map((entry) => (
-              <tr key={entry.name} className="border-t border-brand-500/10">
-                <td className="px-4 py-2">{entry.name}</td>
-                <td className="px-4 py-2">{entry.license}</td>
+              <tr key={entry.name} className="border-t border-line">
+                <td className="px-4 py-2.5 text-muted">{entry.name}</td>
+                <td className="px-4 py-2.5 text-muted">{entry.license}</td>
               </tr>
             ))}
           </tbody>
@@ -55,7 +55,7 @@ export function LicensesPage({ onBack }: LicensesPageProps): ReactElement {
 
       <button
         type="button"
-        className="self-start rounded border border-brand-500/40 px-3 py-1.5 text-sm"
+        className="self-start rounded-xl border border-line-strong px-4 py-2 text-sm font-semibold text-muted transition-colors hover:border-faint hover:text-txt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange"
         onClick={onBack}
       >
         {t("licenses.back")}
