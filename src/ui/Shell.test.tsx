@@ -13,9 +13,29 @@ describe("Shell", () => {
     const user = userEvent.setup();
     render(<App />);
     const initialTitle = screen.getByRole("heading", { level: 1 }).textContent;
-    await user.click(screen.getByRole("button"));
+    await user.click(screen.getByTestId("locale-toggle"));
     const toggledTitle = screen.getByRole("heading", { level: 1 }).textContent;
     expect(toggledTitle).not.toBe(initialTitle);
     expect(["Convertisseur local", "Local Converter"]).toContain(toggledTitle);
+  });
+
+  it("navigates to the privacy page and back", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "Privacy & GDPR" }));
+    expect(screen.getByRole("heading", { level: 1, name: "Privacy & GDPR" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Back to home" }));
+    expect(screen.getByRole("heading", { level: 1, name: "Local Converter" })).toBeInTheDocument();
+  });
+
+  it("navigates to the licenses page and lists runtime dependencies", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "Third-party licenses" }));
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Third-party licenses" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("react / react-dom")).toBeInTheDocument();
+    expect(screen.getAllByText("MIT").length).toBeGreaterThan(0);
   });
 });
