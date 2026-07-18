@@ -9,7 +9,7 @@ import type { ConversionEntry } from "../core/registry";
 //   office: async () => (await import("../converters/office/module")).officeModule,
 //
 // A conversion whose module has no loader fails with
-// "unsupported-conversion" — that is the real runtime behavior while a
+// "unsupported-conversion" -- that is the real runtime behavior while a
 // module is not merged yet, not a placeholder.
 export const MODULE_LOADERS: Partial<
   Record<ConversionEntry["module"], () => Promise<ConverterModule>>
@@ -17,4 +17,5 @@ export const MODULE_LOADERS: Partial<
   pdf: async () => (await import("../converters/pdf/module")).pdfModule,
   image: async () => (await import("../converters/image/module")).imageModule,
   office: async () => (await import("../converters/office/module")).officeModule,
+  markdown: async () => (await import("../converters/markdown/module")).markdownModule,
 };
