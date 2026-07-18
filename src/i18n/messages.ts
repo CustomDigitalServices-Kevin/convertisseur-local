@@ -72,6 +72,18 @@ const fr = {
     "Ce convertisseur est un logiciel libre publié sous licence MIT. Il s'appuie sur les bibliothèques open source suivantes, exécutées entièrement dans votre navigateur.",
   "licenses.columnLibrary": "Bibliothèque",
   "licenses.columnLicense": "Licence",
+
+  "footer.brand": "Custom Digital Services",
+
+  "trust.gdpr.title": "Conforme RGPD par design",
+  "trust.gdpr.body":
+    "Aucune donnée ne transite : la politique de sécurité (CSP) du navigateur bloque techniquement tout envoi.",
+  "trust.offline.title": "Fonctionne hors ligne",
+  "trust.offline.body":
+    "Une fois chargés, les moteurs WebAssembly sont mis en cache : convertissez même sans connexion.",
+  "trust.opensource.title": "Open source (MIT)",
+  "trust.opensource.body":
+    "Code source public sous licence MIT. Aucun tracker, aucun cookie, aucune inscription.",
 } as const;
 
 export type MessageKey = keyof typeof fr;
@@ -147,6 +159,18 @@ const en: Record<MessageKey, string> = {
     "This converter is free software released under the MIT license. It relies on the following open source libraries, all running entirely in your browser.",
   "licenses.columnLibrary": "Library",
   "licenses.columnLicense": "License",
+
+  "footer.brand": "Custom Digital Services",
+
+  "trust.gdpr.title": "GDPR-compliant by design",
+  "trust.gdpr.body":
+    "No data ever transits: the browser's security policy (CSP) technically blocks any upload.",
+  "trust.offline.title": "Works offline",
+  "trust.offline.body":
+    "Once loaded, the WebAssembly engines are cached: convert even without a connection.",
+  "trust.opensource.title": "Open source (MIT)",
+  "trust.opensource.body":
+    "Publicly available source code under the MIT license. No tracker, no cookie, no sign-up.",
 };
 
 export const messages: Record<Locale, Record<MessageKey, string>> = { fr, en };
