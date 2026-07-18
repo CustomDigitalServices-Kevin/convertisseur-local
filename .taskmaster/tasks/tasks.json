@@ -231,7 +231,7 @@
       {
         "id": 8,
         "title": "Core v2 (phase A2, lead)",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           7
         ],
@@ -243,34 +243,34 @@
           {
             "id": 1,
             "title": "FILE_FORMATS + codes erreur (gdoc-pointer)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "detect.ts magic bytes + extensions + .gdoc",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "registry.ts paires v2 par module",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "pdf-render.ts partagé (refactor office)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "Tests detect/registry v2",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
       {
         "id": 9,
         "title": "Refonte UI premium (phase B2, teammate ui)",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           8
         ],
@@ -282,34 +282,34 @@
           {
             "id": 1,
             "title": "Tokens + header + hero + section confiance",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "Dropzone premium + pills formats",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "Cartes fichiers + anneau progression SVG",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "Pages Confidentialité/Licences restylées + message .gdoc",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "Tests RTL adaptés",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
       {
         "id": 10,
         "title": "Module markdown (phase B2, teammate md)",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           8
         ],
@@ -321,34 +321,34 @@
           {
             "id": 1,
             "title": "MD→HTML + HTML→MD (pipeline rehype)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "MD→DOCX + MD→PDF + TXT",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "PDF→MD + PDF→DOCX (heuristique texte, preview)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "DOCX→MD + EPUB (si worker OK)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "Tests fixtures + licences",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
       {
         "id": 11,
         "title": "Module data + images v2 (phase B2, teammate data)",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           8
         ],
@@ -360,34 +360,34 @@
           {
             "id": 1,
             "title": "YAML↔JSON + XML↔JSON",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
             "title": "JSON↔CSV plat",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
             "title": "TIFF (utif) + BMP (bmp-js)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
             "title": "GIF decode/encode (omggif/gifenc)",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
             "title": "Tests fixtures + licences",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
       {
         "id": 12,
         "title": "Finalisation v2 (phase C2, lead)",
-        "status": "pending",
+        "status": "in-progress",
         "dependencies": [
           9,
           10,
