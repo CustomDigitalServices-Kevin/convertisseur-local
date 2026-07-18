@@ -78,18 +78,13 @@ export function FileQueueItem({
           )}
         </p>
         {(item.status === "queued" || item.status === "converting") && (
-          <div
-            className="mt-2 h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-brand-500/20"
-            role="progressbar"
-            aria-valuenow={item.progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          >
-            <div
-              className="h-full bg-brand-600 transition-all"
-              style={{ width: `${String(item.progress)}%` }}
-            />
-          </div>
+          // Native element: no inline style attribute, so the strict CSP
+          // works even where style-src-attr is unsupported (Safari).
+          <progress
+            className="mt-2 h-1.5 w-full max-w-xs accent-brand-600"
+            value={item.progress}
+            max={100}
+          />
         )}
       </div>
 

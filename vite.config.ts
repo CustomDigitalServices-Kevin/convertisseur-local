@@ -53,6 +53,10 @@ export default defineConfig({
         // WASM codecs are the whole point of offline support; the Workbox
         // default cap (2 MiB) would silently exclude them (advisor 2026-07-18).
         globPatterns: ["**/*.{js,css,html,wasm,svg,png,woff2}"],
+        // The multi-thread AVIF encoder variant is never used: avif.ts forces
+        // the single-thread codec (no COOP/COEP on the static deployment), so
+        // precaching those chunks would waste ~3.5 MB per visitor (D9).
+        globIgnores: ["**/avif_enc_mt*"],
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024,
       },
       manifest: {
