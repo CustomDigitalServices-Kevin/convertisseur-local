@@ -49,4 +49,7 @@ npm run check:licenses  # dependency license allowlist (no AGPL/LGPL)
 
 MIT. Dependency policy: only MIT / Apache-2.0 / BSD / MPL-2.0 (and equivalent permissive) licenses are allowed, enforced by `npm run check:licenses` in CI. See the third-party licenses page in the app for attributions.
 
-Made by [Custom Digital Services](https://custom-digital-services.fr) — more free tools at [custom-digital-services.fr/outils](https://custom-digital-services.fr/outils/).
+## About
+
+Built and maintained by [Kevin Tomas](https://www.custom-digital-services.com/?utm_source=github&utm_medium=readme&utm_campaign=convertisseur-local), freelance Power Platform and Microsoft AI consultant (Custom Digital Services).
+Try it online: [www.custom-digital-services.com/outils/convertisseur](https://www.custom-digital-services.com/outils/convertisseur/?utm_source=github&utm_medium=readme&utm_campaign=convertisseur-local). More free tools: [www.custom-digital-services.com/outils](https://www.custom-digital-services.com/outils/?utm_source=github&utm_medium=readme&utm_campaign=convertisseur-local)
